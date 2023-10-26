@@ -1,0 +1,106 @@
+const express = require ("express");
+const app = express();
+app.use(express.json());
+const cors = require("cors");
+app.use(cors());
+const port = process.env.PORT || 3000;
+const {Pool} = require("pg");
+
+const db = new Pool
+({
+    user: "student",
+    host: "localhost",
+    database: "postgres",
+    password: "",
+    port: 5432
+ });
+
+
+db.connect(function (err) {
+   if(err) throw err;
+   console.log("Successfully connected to database")
+});
+
+app.get("/", function (req,res) {
+    res.status(200).json("wellcome")
+});
+
+
+app.get("/recommendations", async function(req,res){
+     try {
+        const recommendationsQuery = 
+        `
+        SELECT r.name AS recommendation_name, m.type AS medium_type,mood.type as mood , rm.mood_id, u.name AS user_name 
+        FROM recommendations AS r
+        LEFT JOIN medium AS m ON r.medium_id = m.id
+        LEFT JOIN users AS u ON r.user_id = u.id
+        LEFT JOIN recommendationMood AS rm ON r.id = rm.recommendation_id
+        LEFT JOIN mood on rm.mood_id=mood.id;
+        `
+        const result = await db.query(recommendationsQuery);
+            res.status(200).json(result.rows)
+        } catch (error) {
+        return res.status(500).json({error:"Internal server error"});
+    }
+})
+
+app.get("/recommendations/books", async function(req,res){
+    try {
+       const recommendationsQuery = 
+       `
+       SELECT r.name AS recommendation_name, m.type AS medium_type,mood.type as mood , rm.mood_id, u.name AS user_name 
+       FROM recommendations AS r
+       LEFT JOIN medium AS m ON r.medium_id = m.id
+       LEFT JOIN users AS u ON r.user_id = u.id
+       LEFT JOIN recommendationMood AS rm ON r.id = rm.recommendation_id
+       LEFT JOIN mood on rm.mood_id=mood.id
+       WHERE m.type = 'book';
+       `
+       const result = await db.query(recommendationsQuery);
+           res.status(200).json(result.rows)
+       } catch (error) {
+       return res.status(500).json({error:"Internal server error"});
+   }
+})
+
+app.get("/recommendations/musics", async function(req,res){
+    try {
+       const recommendationsQuery = 
+       `
+       SELECT r.name AS recommendation_name, m.type AS medium_type,mood.type as mood , rm.mood_id, u.name AS user_name 
+       FROM recommendations AS r
+       LEFT JOIN medium AS m ON r.medium_id = m.id
+       LEFT JOIN users AS u ON r.user_id = u.id
+       LEFT JOIN recommendationMood AS rm ON r.id = rm.recommendation_id
+       LEFT JOIN mood on rm.mood_id=mood.id
+       WHERE m.type = 'music';
+       `
+       const result = await db.query(recommendationsQuery);
+           res.status(200).json(result.rows)
+       } catch (error) {
+       return res.status(500).json({error:"Internal server error"});
+   }
+})
+
+app.get("/recommendations/movies", async function(req,res){
+    try {
+       const recommendationsQuery = 
+       `
+       SELECT r.name AS recommendation_name, m.type AS medium_type,mood.type as mood , rm.mood_id, u.name AS user_name 
+       FROM recommendations AS r
+       LEFT JOIN medium AS m ON r.medium_id = m.id
+       LEFT JOIN users AS u ON r.user_id = u.id
+       LEFT JOIN recommendationMood AS rm ON r.id = rm.recommendation_id
+       LEFT JOIN mood on rm.mood_id=mood.id
+       WHERE m.type = 'movie';
+       `
+       const result = await db.query(recommendationsQuery);
+           res.status(200).json(result.rows)
+       } catch (error) {
+       return res.status(500).json({error:"Internal server error"});
+   }
+})
+
+
+
+app.listen(port,()=> console.log(`listenig on port${port}`));
