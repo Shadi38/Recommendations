@@ -5,12 +5,16 @@ function Recommendations() {
 const [recommendation,setRecommendation] = useState([]);
 const [mediumValue,setMediumValue] = useState("movies");
 const [mediumShow,setMediumShow] = useState('');
+const [moodValue,setMoodValue] = useState("scary");
+const [moodShow,setMoodShow] = useState("");
+
 async function clickHandler(e){
 e.preventDefault();
 const response = await fetch("http://localhost:3000/recommendations")
 const data =await response.json();
  setRecommendation(data);
 }
+
 function cancleRecommendationHandler(e) {
     e.preventDefault();
     setRecommendation("");  
@@ -18,8 +22,9 @@ function cancleRecommendationHandler(e) {
 
 async function mediumHandeler(e){
     try {
+        console.log(mediumValue)
         e.preventDefault();
-    const response = await fetch(`http://localhost:3000/recommendations/${mediumValue}`)
+    const response = await fetch(`http://localhost:3000/recommendations/medium?medium=${mediumValue}`)
     if(!response.ok){
         throw new Error("something went wrong")
     }
@@ -29,11 +34,28 @@ async function mediumHandeler(e){
       console.error("Error fetching data",error)  
     }
 }
-
 function cancleMediumHandler(e){
     setMediumShow('');
 }
 
+async function moodHandeler(e){
+    try {
+        console.log(moodValue)
+        e.preventDefault();
+    const response = await fetch(`http://localhost:3000/recommendations/mood?mood=${moodValue}`)
+    if(!response.ok){
+        throw new Error("something went wrong")
+    }
+    const data =await response.json();
+    setMoodShow(data);
+    } catch (error) {
+      console.error("Error fetching data",error)  
+    }
+    
+}
+function cancleMoodHandler(e){
+    setMoodShow('');
+}
     return(
         <div className="mainDiv">
                 <div> 
@@ -69,46 +91,69 @@ function cancleMediumHandler(e){
                                 onChange={(e)=> {
                                     const selectedMedium = e.target.value;
                                     setMediumValue(selectedMedium);
-                                }}>
-                                    <option value={"movies"}>Movie</option>
-                                    <option value={"musics"}>Music</option>
-                                    <option value={"books"}>book</option>
+                                      }}>
+                                    <option value={"movie"}>Movie</option>
+                                    <option value={"music"}>Music</option>
+                                    <option value={"book"}>book</option>
                                 </select>
-                                <button onClick={(e)=>mediumHandeler(e)}>
+                                <button style={{marginLeft:5}} onClick={(e)=>mediumHandeler(e)}>
                                     click
                                 </button>
-                                {mediumShow.length > 0 ? (
-                        <div className="allRecommendationsDiv">
-                            <div>
-                            <button  style={{margin:5}} onClick={(e)=>cancleMediumHandler(e)}>
-                        cancle
-                        </button>
-                            {mediumShow.map((item, index) => (
-                            <div key={index} className="recommendationDiv">
-                                {`${item.user_name} recommends the ${item.recommendation_name} ${item.medium_type} which has ${item.mood} mood`}
-                            </div>
-                            ))}
+                                
+                             </div>
+                             <div>
+                                <select 
+                                value={moodValue}
+                                onChange={(e)=>{
+                                const selectedMood = e.target.value;
+                                 setMoodValue(selectedMood);
+                                }}>
+                                    <option value={"scary"}>scary</option>
+                                    <option value={"romantic"}>romantis</option>
+                                    <option value={"comedy"}>comedy</option>
+                                    <option value={"action"}>action</option>
+                                    <option value={"documentary"}>documentary</option>
+                                    <option value={"drama"}>drama</option>
+                                    <option value={"science fiction"}>science fiction</option>
+                                    <option value={"crime"}>crime</option>
+                                    <option value={"pop"}>pop</option>
+                                    <option value={"classic"}>classic</option>
+                                    <option value={"light"}>light</option>
+                                    <option value={"emeretic"}>energetic</option>
+                                </select>
+                                <button style={{marginLeft:5}} onClick={(e)=>moodHandeler(e)}>
+                                    click
+                                </button>
                             </div>
                         </div>
-                        ) : null}
-                            </div>
-
-                         <select>
-                            <option>scary</option>
-                            <option>romantis</option>
-                            <option>comedy</option>
-                            <option>action</option>
-                            <option>documentary</option>
-                            <option>drama</option>
-                            <option>science fiction</option>
-                            <option>crime</option>
-                            <option>pop</option>
-                            <option>classic</option>
-                            <option>light</option>
-                            <option>energetic</option>
-                         </select>
-                        </div>
-
+                        {mediumShow.length > 0 ? (
+                              <div className="allRecommendationsDiv">
+                                    <div>
+                                        <button  style={{margin:5}} onClick={(e)=>cancleMediumHandler(e)}>
+                                        cancle
+                                        </button>
+                                        {mediumShow.map((item, index) => (
+                                        <div key={index} className="recommendationDiv">
+                                            {`${item.user_name} recommends the ${item.recommendation_name} ${item.medium_type} which has ${item.mood} mood`}
+                                        </div>
+                                        ))}
+                                    </div>
+                                 </div>
+                                  ) : null}
+                                  {moodShow.length > 0 ? (
+                              <div className="allRecommendationsDiv">
+                                    <div>
+                                        <button  style={{margin:5}} onClick={(e)=>cancleMoodHandler(e)}>
+                                        cancle
+                                        </button>
+                                        {moodShow.map((item, index) => (
+                                        <div key={index} className="recommendationDiv">
+                                            {`${item.user_name} recommends the ${item.recommendation_name} ${item.medium_type}`}
+                                        </div>
+                                        ))}
+                                    </div>
+                                 </div>
+                                  ) : null}
                 </div>
             
 
