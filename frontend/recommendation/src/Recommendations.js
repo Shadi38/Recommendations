@@ -44,6 +44,7 @@ async function mediumHandeler(e){
         throw new Error("something went wrong")
     }
     const data =await response.json();
+    debugger
     setMediumShow(data);
     } catch (error) {
       console.error("Error fetching data",error)  
