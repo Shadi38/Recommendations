@@ -6,24 +6,12 @@ app.use(cors());
 const port = process.env.PORT || 3000;
 const {Pool} = require("pg");
 
-const db = new Pool
-({
-    user: "student",
-    host: "localhost",
-    database: "postgres",
-    password: "",
-    port: 5432
- });
 
-//  const db = new Pool
-// ({
-//     user: process.env.DB_USER,
-//     host:process.env.DB_HOST ,
-//     database: process.env.DB_NAME,
-//     password: process.env.DB_PASSWORD,
-//     port: process.env.DB_PORT,
-//     url: process.env.DB_URL
-//  });
+
+ const db = new Pool
+({ 
+    url: process.env.DB_URL
+ });
 
 
 db.connect(function (err) {
