@@ -15,6 +15,8 @@ const db = new Pool
     port: 5432
  });
 
+ 
+
 
 db.connect(function (err) {
    if(err) throw err;
