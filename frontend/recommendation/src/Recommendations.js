@@ -10,7 +10,7 @@ const [moodShow,setMoodShow] = useState("");
 
 async function clickHandler(e){
 e.preventDefault();
-const response = await fetch("http://localhost:3000/recommendations")
+const response = await fetch("https://recommendation-s061.onrender.com/recommendations")
 const data =await response.json();
  setRecommendation(data);
 }
@@ -20,11 +20,26 @@ function cancleRecommendationHandler(e) {
     setRecommendation("");  
 }
 
+// async function mediumHandeler(e){
+//     try {
+//         console.log(mediumValue)
+//         e.preventDefault();
+//     const response = await fetch(`https://recommendation-s061.onrender.com/recommendations/medium?medium=${mediumValue}`)
+//     if(!response.ok){
+//         throw new Error("something went wrong")
+//     }
+//     const data =await response.json();
+//     setMediumShow(data);
+//     } catch (error) {
+//       console.error("Error fetching data",error)  
+//     }
+// }
+
 async function mediumHandeler(e){
     try {
         console.log(mediumValue)
         e.preventDefault();
-    const response = await fetch(`http://localhost:3000/recommendations/medium?medium=${mediumValue}`)
+    const response = await fetch(`https://recommendation-s061.onrender.com/recommendations/mediumAndmood?medium=${mediumValue} & mood=${moodValue}`)
     if(!response.ok){
         throw new Error("something went wrong")
     }
@@ -42,7 +57,7 @@ async function moodHandeler(e){
     try {
         console.log(moodValue)
         e.preventDefault();
-    const response = await fetch(`http://localhost:3000/recommendations/mood?mood=${moodValue}`)
+    const response = await fetch(`https://recommendation-s061.onrender.com/recommendations/mood?mood=${moodValue}`)
     if(!response.ok){
         throw new Error("something went wrong")
     }
