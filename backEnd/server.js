@@ -48,30 +48,9 @@ app.get("/recommendations", async function(req,res){
 })
 
 
-// app.get("/recommendations/medium", async function(req,res){
-//     try {
-//         const selectedMedium = req.query.medium
-//        const recommendationsQuery = 
-//        `
-//        SELECT r.name AS recommendation_name, m.type AS medium_type,mood.type as mood , rm.mood_id, u.name AS user_name 
-//        FROM recommendations AS r
-//        LEFT JOIN medium AS m ON r.medium_id = m.id
-//        LEFT JOIN users AS u ON r.user_id = u.id
-//        LEFT JOIN recommendationMood AS rm ON r.id = rm.recommendation_id
-//        LEFT JOIN mood on rm.mood_id=mood.id
-//        WHERE m.type = $1
-//        `
-//        const result = await db.query(recommendationsQuery,[selectedMedium]);
-//            res.status(200).json(result.rows)
-//        } catch (error) {
-//        return res.status(500).json({error:"Internal server error"});
-//    }
-// })
-
-app.get("/recommendations/mediumAndmood", async function(req,res){
+app.get("/recommendations/medium", async function(req,res){
     try {
-        const selectedMedium = req.query.medium;
-        const selectedMood = req.query.mood;
+        const selectedMedium = req.query.medium
        const recommendationsQuery = 
        `
        SELECT r.name AS recommendation_name, m.type AS medium_type,mood.type as mood , rm.mood_id, u.name AS user_name 
@@ -81,35 +60,18 @@ app.get("/recommendations/mediumAndmood", async function(req,res){
        LEFT JOIN recommendationMood AS rm ON r.id = rm.recommendation_id
        LEFT JOIN mood on rm.mood_id=mood.id
        WHERE m.type = $1
-       and mood.type = $2;
        `
-       const result = await db.query(recommendationsQuery,[selectedMedium,selectedMood]);
+       const result = await db.query(recommendationsQuery,[selectedMedium]);
            res.status(200).json(result.rows)
        } catch (error) {
        return res.status(500).json({error:"Internal server error"});
    }
 })
-// app.get("/recommendations/musics", async function(req,res){
-//     try {
-//        const recommendationsQuery = 
-//        `
-//        SELECT r.name AS recommendation_name, m.type AS medium_type,mood.type as mood , rm.mood_id, u.name AS user_name 
-//        FROM recommendations AS r
-//        LEFT JOIN medium AS m ON r.medium_id = m.id
-//        LEFT JOIN users AS u ON r.user_id = u.id
-//        LEFT JOIN recommendationMood AS rm ON r.id = rm.recommendation_id
-//        LEFT JOIN mood on rm.mood_id=mood.id
-//        WHERE m.type = 'music';
-//        `
-//        const result = await db.query(recommendationsQuery);
-//            res.status(200).json(result.rows)
-//        } catch (error) {
-//        return res.status(500).json({error:"Internal server error"});
-//    }
-// })
 
-// app.get("/recommendations/movies", async function(req,res){
+// app.get("/recommendations/mediumAndmood", async function(req,res){
 //     try {
+//         const selectedMedium = req.query.medium;
+//         const selectedMood = req.query.mood;
 //        const recommendationsQuery = 
 //        `
 //        SELECT r.name AS recommendation_name, m.type AS medium_type,mood.type as mood , rm.mood_id, u.name AS user_name 
@@ -118,14 +80,52 @@ app.get("/recommendations/mediumAndmood", async function(req,res){
 //        LEFT JOIN users AS u ON r.user_id = u.id
 //        LEFT JOIN recommendationMood AS rm ON r.id = rm.recommendation_id
 //        LEFT JOIN mood on rm.mood_id=mood.id
-//        WHERE m.type = 'movie';
+//        WHERE m.type = $1
+//        and mood.type = $2;
 //        `
-//        const result = await db.query(recommendationsQuery);
+//        const result = await db.query(recommendationsQuery,[selectedMedium,selectedMood]);
 //            res.status(200).json(result.rows)
 //        } catch (error) {
 //        return res.status(500).json({error:"Internal server error"});
 //    }
 // })
+app.get("/recommendations/musics", async function(req,res){
+    try {
+       const recommendationsQuery = 
+       `
+       SELECT r.name AS recommendation_name, m.type AS medium_type,mood.type as mood , rm.mood_id, u.name AS user_name 
+       FROM recommendations AS r
+       LEFT JOIN medium AS m ON r.medium_id = m.id
+       LEFT JOIN users AS u ON r.user_id = u.id
+       LEFT JOIN recommendationMood AS rm ON r.id = rm.recommendation_id
+       LEFT JOIN mood on rm.mood_id=mood.id
+       WHERE m.type = 'music';
+       `
+       const result = await db.query(recommendationsQuery);
+           res.status(200).json(result.rows)
+       } catch (error) {
+       return res.status(500).json({error:"Internal server error"});
+   }
+})
+
+app.get("/recommendations/movies", async function(req,res){
+    try {
+       const recommendationsQuery = 
+       `
+       SELECT r.name AS recommendation_name, m.type AS medium_type,mood.type as mood , rm.mood_id, u.name AS user_name 
+       FROM recommendations AS r
+       LEFT JOIN medium AS m ON r.medium_id = m.id
+       LEFT JOIN users AS u ON r.user_id = u.id
+       LEFT JOIN recommendationMood AS rm ON r.id = rm.recommendation_id
+       LEFT JOIN mood on rm.mood_id=mood.id
+       WHERE m.type = 'movie';
+       `
+       const result = await db.query(recommendationsQuery);
+           res.status(200).json(result.rows)
+       } catch (error) {
+       return res.status(500).json({error:"Internal server error"});
+   }
+})
 
 app.get("/recommendations/mood", async function(req,res){
     try {

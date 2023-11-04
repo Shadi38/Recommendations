@@ -20,36 +20,39 @@ function cancleRecommendationHandler(e) {
     setRecommendation("");  
 }
 
-// async function mediumHandeler(e){
-//     try {
-//         console.log(mediumValue)
-//         e.preventDefault();
-//     const response = await fetch(`https://recommendation-s061.onrender.com/recommendations/medium?medium=${mediumValue}`)
-//     if(!response.ok){
-//         throw new Error("something went wrong")
-//     }
-//     const data =await response.json();
-//     setMediumShow(data);
-//     } catch (error) {
-//       console.error("Error fetching data",error)  
-//     }
-// }
-
 async function mediumHandeler(e){
     try {
         console.log(mediumValue)
         e.preventDefault();
-    const response = await fetch(`https://recommendation-s061.onrender.com/recommendations/mediumAndmood?medium=${mediumValue}&mood=${moodValue}`)
+    const response = await fetch(`https://recommendation-s061.onrender.com/recommendations/medium?medium=${mediumValue}`)
     if(!response.ok){
         throw new Error("something went wrong")
     }
     const data =await response.json();
-    
     setMediumShow(data);
     } catch (error) {
       console.error("Error fetching data",error)  
     }
 }
+
+// async function mediumHandeler(e){
+//     try {
+//         console.log(mediumValue)
+//         console.log("qwer")
+//         e.preventDefault();
+//     const response = await fetch(`https://recommendation-s061.onrender.com/recommendations/mediumAndmood?medium=${mediumValue}&mood=${moodValue}`)
+//     console.log(response);
+//     if(!response.ok){
+        
+//         throw new Error("something went wrong")
+//     }
+//     const data =await response.json();
+//     console.log(data);
+//     setMediumShow(data);
+//     } catch (error) {
+//       console.error("Error fetching data",error)  
+//     }
+// }
 function cancleMediumHandler(e){
     setMediumShow('');
 }
